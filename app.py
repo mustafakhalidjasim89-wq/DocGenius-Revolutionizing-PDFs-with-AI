@@ -41,7 +41,7 @@ if prompt:
                     full_prompt = f"Context from uploaded PDF:\n{pdf_text}\n\nUser Prompt: {prompt}"
 
                 # Updated model string
-                model = genai.GenerativeModel("gemini-2.0-flash")
+                model = genai.GenerativeModel("gemini-3.8-flash")
                 response = model.generate_content(full_prompt)
                 st.write(response.text)
         except Exception as e:
