@@ -4,13 +4,10 @@ import google.generativeai as genai
 from PyPDF2 import PdfReader
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Page configuration
 st.set_page_config(page_title="Gemini AI Content Generator", layout="wide")
 
-# Configure Gemini API
 api_key = os.getenv("GEMINI_API_KEY")
 if api_key:
     genai.configure(api_key=api_key)
@@ -30,22 +27,21 @@ if uploaded_pdf is not None:
             pdf_text += extracted + "\n"
     st.sidebar.success(f"PDF uploaded successfully! ({len(reader.pages)} pages)")
 
-# Main Prompt Input
+# Prompt Input
 prompt = st.text_input("Enter a prompt:")
 
-# Output Section
 if prompt:
     if not api_key:
         st.error("Please set your GEMINI_API_KEY in the .env file or environment variables.")
     else:
         try:
             with st.spinner("Generating content..."):
-                # Combine prompt with PDF text if available
                 full_prompt = prompt
                 if pdf_text:
                     full_prompt = f"Context from uploaded PDF:\n{pdf_text}\n\nUser Prompt: {prompt}"
 
-                genai.GenerativeModel("gemini-1.5-flash-latest")
+                # Updated model string
+                model = genai.GenerativeModel("gemini-1.5-flash-latest")
                 response = model.generate_content(full_prompt)
                 st.write(response.text)
         except Exception as e:
